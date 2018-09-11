@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	
+	<mvc:annotation-driven /><!-- 리턴타입:bean -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<!-- 내부에 어노테이션으로 bean 객체 만들때는 <mvc>로 만든다 -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<!-- 외부 라이브러리에서 가져와서 bean 객체를 만들때는 <bean>으로 만든다  -->
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+					<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+				</bean>
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/" />
+					<property name="suffix" value=".jsp" />
+				</bean>
+			</list>
+		</property>
+	</bean>	
+	<bean id="tilesConfigurer" 
+	 class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+	<property name="definitions">
+		<list>
+			<value>/WEB-INF/tiles.xml</value>
+		</list>
+	</property>
+</bean>
+	<context:component-scan base-package="com.gms.web" />
+	<!-- com.gms.web.controller 이렇게 controller 써있으면 제약걸리는 것-->
+	<!-- base-package="com.gms.web.controller 로 되면 controller 폴더만 허용해놨으니, MemberController는 만들어지는데 MemberDTO는 못만들고 에러난다. -->
+	<!-- 리턴타입:bean -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<property name="url" value="jdbc:mariadb://localhost:3306/mariadb" />
+		<property name="username" value="mariadb" />
+		<property name="password" value="mariadb" />
+	</bean>
+	<!-- ===FM 설정법===
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean" >
+	<property name="dataSource" ref="dataSource" />
+	<property name="configLocation" value="classpath:config/mybatis-config.xml" ></property>
+	</bean> -->
+	
+	<!-- ===간소화된 설정법=== -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean" >
+	<property name="dataSource" ref="dataSource" />
+	<property name="mapperLocations" value="classpath:com/gms/web/mapper/*Mapper.xml"></property>
+	<!-- mapperLocations : impl 안하고 interface 받기 위해서 하는 설정이야 -->
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean"/>
+	</bean>
+	
+	<mybatis-spring:scan base-package="com.gms.web.mapper"/>
+</beans>

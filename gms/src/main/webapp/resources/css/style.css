@@ -1,0 +1,171 @@
+@charset "EUC-KR";
+
+.cursor{cursor:pointer}
+
+.bgColorYellow{background-color: #ffff00}
+.bgColorLightGreen{background-color: #b3ffe0}
+
+.width80pt{width:80%}
+.width90pt{width:90%}
+.width100pt{width:100%}
+.width300px{width:300px}
+
+.center{margin:0, auto}	
+
+.marginTop30px{margin-top: 30px}
+.marginTop50px{margin-top: 50px}
+.marginLeft200px{margin-left: 200px}
+.marginRight200px{margin-right: 200px}
+.marginBot30px{margin-bottom:30px}
+.marginBot50px{margin-bottom:50px}
+
+.floatRight{float: right}
+
+.fontColorBlue{color:blue}
+.fontColorWhite{color:white}
+
+.textAlignRight{text-align: right}
+.textAlignCenter{text-align: center}	
+
+.pageBox{
+		list-style: none;
+		padding: 0;
+		margin: 0;
+}
+.pageBox li{
+	display: inline;
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	body {font-family: 'Malgun Gothic', 'Verdana';
+		background-color: #fae285;
+		color: #ffffff;
+		margin: 0;
+		padding: 0;
+	}
+	h1,h2,h3,h4,h5,h6{
+		font-size: 1.5em;
+	}
+	h1{
+		font-size: 2em;
+		padding-bottom: 0;
+		margin-bottom: 0;
+	}
+	
+	div#wrapper{
+		width: 90%;
+		padding-bottom: 0;
+		margin-bottom: 0;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	div#header{
+		position: relative;
+		margin-bottom: 0;
+		padding: 0;
+		color: #ff0000;
+	}
+	div#title{
+		float: left;
+		text-align: left;
+		display: block;
+	}	
+	div#login-box{
+		float: right;
+		margin: 10px;
+		font-size: 1.1em;
+		display: block;
+		color: #ffffff;
+	}	
+	div#login-box a:hover{
+		color: #ff8000;
+		text-decoration: none;
+	}
+	div#login-box a:active{
+		color:#ff00ff;
+		text-decoration: none;
+	}
+	div#header h1{
+		color: #ffffff;
+		padding:  5px 0;
+		margin: 0;
+		border: none;
+		line-height: 2em;
+		font-weight: bold;
+		font-size:32px;
+	}
+	div#content{
+		padding: 15px 30px 15px 30px;
+		background-color: #fff;
+		color: #400040;
+		margin-bottom: 30px;
+		min-height: 400px;
+	}		
+	div#content-box{
+		clear: both;
+		/* clear: both; ->좌표 relative를 다시 static으로 변경하는 것 */
+		margin-top: 40px;
+	}
+	div#menu-box{
+		clear: both;
+		margin-top: 40px;
+	}
+	ul#menu{
+		text-align: right;
+		margin: 0;
+		border-bottom: 1px #ff00ff;
+		position: relative;
+		}
+	ul#menu li{
+		display: inline;
+		list-style: none;
+		background-color: #ffe6ff;
+	}
+	ul#menu li a{
+		padding: 10px 20px;
+		background-color:   #ffe6ff;
+		font-weight: bold;
+		text-decoration: none;
+		line-height:  2.8em;
+		color: black;
+	}
+	ul#menu li a:hover{
+		background-color: #b3ffe0;
+		text-decoration: none;
+	}
+	ul#menu li a:active{
+		background-color: #b3ffe0;
+		text-decoration: none;
+	}
+	div#footer{
+		clear: both;
+		color: #ffe6ff;
+		text-align: center;
+		margin: 0;
+		padding: 10px 0;
+		line-height:  normal;
+		font-size: 1.5em;
+	}
+	
+table{border:1px}
