@@ -24,9 +24,6 @@
 	<!-- 외부 라이브러리에서 가져와서 bean 객체를 만들때는 <bean>으로 만든다  -->
 		<property name="viewResolvers">
 			<list>
-				<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-					<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
-				</bean>
 				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 					<property name="prefix" value="/WEB-INF/views/" />
 					<property name="suffix" value=".jsp" />
@@ -34,14 +31,7 @@
 			</list>
 		</property>
 	</bean>	
-	<bean id="tilesConfigurer" 
-	 class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-	<property name="definitions">
-		<list>
-			<value>/WEB-INF/tiles.xml</value>
-		</list>
-	</property>
-</bean>
+
 	<context:component-scan base-package="com.gms.web" />
 	<!-- com.gms.web.controller 이렇게 controller 써있으면 제약걸리는 것-->
 	<!-- base-package="com.gms.web.controller 로 되면 controller 폴더만 허용해놨으니, MemberController는 만들어지는데 MemberDTO는 못만들고 에러난다. -->

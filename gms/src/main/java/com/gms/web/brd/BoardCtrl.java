@@ -61,7 +61,7 @@ public class BoardCtrl {
 		
 		//request.getSession.setAttribute() 와 같다
 		//request.getSession = model
-		return "session:member/retrieve.tiles";
+		return "로그인";
 	}
 	@RequestMapping("/logout")
 	public String logout() {

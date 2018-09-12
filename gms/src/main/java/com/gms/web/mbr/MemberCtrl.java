@@ -1,24 +1,22 @@
 package com.gms.web.mbr;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.gms.web.cmm.Util;
-import com.google.common.base.Function;
 
-@Controller
+@RestController
 @RequestMapping("/member")
-@SessionAttributes("user") 
 
 //세션 안쓰려면 el 안쓰면 되고,정보는 서버에 저장시키지 말고, 각각의 유저의 폰에 저장시켜라
 
@@ -41,7 +39,7 @@ public class MemberCtrl {
 		return "join_success";
 	}
 	
-	@RequestMapping("/login")
+	@PostMapping("/login")
 	public String login(Model model, @ModelAttribute Member member) {
 		/*//@ModelAttribute MemberDTO member은 receiver.cmd 와 같다. request의 모든값 담겨있음
 		//@ModelAttribute는 커맨드 패턴의 carrier */		
@@ -58,9 +56,10 @@ public class MemberCtrl {
 		*/
 		String view = "login_failed";
 		if (Util.notNull.test(mbrMapper.exist(member.getUserid()))) {
-			Function<Member, String> f = (t) -> {
+			Function<Member, String> f =mbrMapper::login;
+			/*Function<Member, String> f = (t) -> {
 				return mbrMapper.login(t);
-			};
+			};*/
 			view = (f.apply(member).equals("1")) ? "login_success" : "login_failed";
 		}
 		member = (Predicate.isEqual("login_success").test(view))?
@@ -122,10 +121,9 @@ public class MemberCtrl {
 	public void count() {}
 	
 	@RequestMapping("/remove")
-	public String remove(@ModelAttribute("user") Member user, SessionStatus sessionStatus) {
+	public String remove(@ModelAttribute("user") Member user ) {
 		logger.info("---remove() :: {}---", "ENTER");
 		memberService.remove(user);
-		sessionStatus.setComplete();
 		return "redirect:/";
 	}
 	

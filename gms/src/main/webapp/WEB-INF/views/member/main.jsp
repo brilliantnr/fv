@@ -5,7 +5,7 @@
 
 <body>
 	<div id="wrapper">
-		<div id="header">
+<%-- 		<div id="header">
 			<jsp:include page="../common/titleBox.jsp" />
 			<jsp:include page="../common/menuBox.jsp" />
 		</div>
@@ -30,7 +30,7 @@
 			</c:choose>
 			<div id="footer">
 			</div>
-		</div>
+		</div> --%>
 	</div>
 </body>
 </html>

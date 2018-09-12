@@ -1,8 +1,7 @@
 package com.gms.web.lambda;
 
 import java.util.function.Consumer;
-
-import com.google.common.base.Function;
+import java.util.function.Function;
 
 public class LambdaMethod {
 	public static void main(String[] args) {

@@ -3,7 +3,7 @@
 <html lang="en">
 <body>
 	<div id="wrapper">
-		<div id="header">
+	<%-- 	<div id="header">
 			<jsp:include page="../common/titleBox.jsp" />
 			<jsp:include page="../common/menuBox.jsp" />
 		</div>
@@ -13,7 +13,7 @@
 		</div>
 		<!-- content end -->
 		<div id="footer">
-		</div>
+		</div> --%>
 	</div>
 	<script>
 		admin.main('${context}');
