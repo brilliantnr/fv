@@ -2,7 +2,6 @@ package com.gms.web.mbr;
 
 import java.util.function.Predicate;
 
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.gms.web.cmm.Util;
 import com.google.common.base.Function;
 
 @Controller
 @RequestMapping("/member")
-@SessionAttributes("user")
+@SessionAttributes("user") 
+
+//세션 안쓰려면 el 안쓰면 되고,정보는 서버에 저장시키지 말고, 각각의 유저의 폰에 저장시켜라
+
 /* session은 공유 공간!
  * jsp화면의 user도 세션을 가져다 쓴 것 
  * @을 붙여야 spring의 mvc가 객체로 인식하기 때문에 MemberDTO member 앞에 붙여야함
@@ -43,30 +46,50 @@ public class MemberCtrl {
 		/*//@ModelAttribute MemberDTO member은 receiver.cmd 와 같다. request의 모든값 담겨있음
 		//@ModelAttribute는 커맨드 패턴의 carrier */		
 		logger.info("---login() :: {}---", "ENTER");
-		
-		
-		//람다식
-		Predicate<String> p = s-> !s.equals("");
+		// 람다식
+		/*
+		//Predicate<String> p = s -> !s.equals("");
+		//string으로 인풋, 파라미터값이 널이 아니면 true ;
+		: 이제 !로 not 쓰지 않는다. 대신 negate()
+		*/
+		/*
+		Predicate<String> p = s -> s.equals("");
+		Predicate<String> notP = p.negate();
+		*/
 		String view = "login_failed";
-		if(p.test(mbrMapper.exist(member.getUserid()))) {
-			Function<Member, String> f = (t)->{
+		if (Util.notNull.test(mbrMapper.exist(member.getUserid()))) {
+			Function<Member, String> f = (t) -> {
 				return mbrMapper.login(t);
 			};
-			view =(f.apply(member).equals("1")) ? "login_success":"login_failed";
+			view = (f.apply(member).equals("1")) ? "login_success" : "login_failed";
 		}
+		member = (Predicate.isEqual("login_success").test(view))?
+				mbrMapper.selectOne(member):
+					new Member();
+				Util.Log.accept(member.toString());
 		return view;
 		
 		
+		/*Predicate<String> ls =s -> s.equals("login_success");*/
+		
+		
+		/*if(Util.notnull.test(view)) {
+			member = mbrMapper.selectOne(member);
+		}
+		System.out.println("member 정보 :"+member);
+		return view;
+		*/
 		/*String path ="";
 		if(memberService.login(member)) { //true
 			model.addAttribute("user",memberService.retrieve(member));
 			path ="session:member/retrieve.tiles";
 		}else{
 			path ="public:member/login.tiles";
-		}*/
+		}
 		//request.getSession.setAttribute() 와 같다
 		//request.getSession = model
 		//return path;
+		 * */
 	}
 	
 	@RequestMapping("/retrieve")
