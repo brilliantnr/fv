@@ -36,25 +36,71 @@ algo.main = {
 			 
 			let $t__l = $('#t__l');
 			let $t__r = $('#t__r');
-			$("<ul/>").attr({id :'side__menu'}).addClass('list-group').appendTo($t__l);
-			$('<li/>').attr({id:'arith'}).addClass('list-group-item').appendTo($('#side__menu'));
-			$('<a/>').attr({href :'#'}).html('등차수열의 합').appendTo($('#arith')).click(e=>{
+			$("<ul/>")
+			.attr({id :'side__menu'})
+			.addClass('list-group')
+			.appendTo($t__l);
+			$('<li/>')
+			.attr({id:'arith'})
+			.addClass('list-group-item')
+			.appendTo($('#side__menu'));
+			$('<a/>')
+			.attr({href :'#'})
+			.html('등차수열의 합')
+			.appendTo($('#arith'))
+			.click(e=>{
 				//익명객체
+				//제이쿼리에서는 못찾겠으면 패스함
 				$t__r.empty();
 					$('<div/>').attr({id:'ques'}).appendTo($t__r);
 					$('<h4>').html('시작값 x, 마지막값 y, 공차 d 인 수열의 합을 구하시오.').appendTo($('#ques'));
-					$('<label>').html('시작값').appendTo($('#ques'));
+					let arr = [
+						{label: '시작값', id:'sta'},
+						{label: '마지막값', id:'end'},
+						{label: '공차', id:'diff'}
+						];
+					/*for(let i in arr){
+						$('<label>').html(arr[i].label).appendTo($('#ques'));
+						$('<input>').attr({id: arr[i].id ,type:'text'}).appendTo($('#ques'));
+						$('<br>').appendTo($('#ques'));
+					};
+					*/
+			
+					$.each(arr,function(){
+						//$.fn.label('시작값','ques'); //label이 컴포넌트
+						$('<label>').html(this.label).appendTo($('#ques'));
+						$('<input>').attr({id: this.id ,type:'text'}).appendTo($('#ques'));
+						$('<br>').appendTo($('#ques'));
+					});
+				
+					/*
+					//DOM객체로
+					$(arr).each(function(i){
+						$('<label>').html(this.label).appendTo($('#ques'));
+						$('<input>').attr({id: this.id ,type:'text'}).appendTo($('#ques'));
+						$('<br>').appendTo($('#ques'));
+					});
+					*/
+					
+					/*
+					  	$('<label>').html('시작값').appendTo($('#ques'));
 						$('<input>').attr({id:'sta',type:'text'}).appendTo($('#ques'));
 						$('<br>').appendTo($('#ques'));
+						
 					$('<label>').html('마지막값').appendTo($('#ques'));
 						$('<input>').attr({id:'end',type:'text'}).appendTo($('#ques'));
 						$('<br>').appendTo($('#ques'));
-					$('<label>').html('공차').appendTo($('#ques'));z
+						
+					$('<label>').html('공차').appendTo($('#ques'));
 						$('<input>').attr({id:'diff',type:'text'}).appendTo($('#ques'));
 						$('<br>').appendTo($('#ques'));
-						
-					$('<button/>').addClass('btn btn-primary').attr({type:'button'})
-					.html('결과보기').appendTo($('#ques')).click(e=>{
+						*/
+					$('<button/>')
+					.addClass('btn btn-primary')
+					.attr({type:'button'})
+					.html('결과보기')
+					.appendTo($('#ques'))
+					.click(e=>{
 						let arr = [$('#sta').val()*1, $('#end').val()*1, $('#diff').val()*1];
 						let rs = ($.fn.zeroChecker(arr)) ? '빈칸을 채우세요' : '완성하세요' ;
 						console.log(rs);
@@ -90,15 +136,7 @@ algo.main = {
 			
 			
 			/*
-			$('#wrapper').html('<h1>알고리즘</h1><h3>수  열</h3><div id="content">'
-					+'<table id="tbl" style="width:800px; height:300px;'
-					+'border-collapse:collapse; border:1px solid black; margin:0 auto">'
-					+'<tr style="border:1px solid balck;">'
-					+'<td id="t__l" style="width:50%; border:1px solid black;"></td>'
-					+'<td id="t__r" style="width:50%; border:1px solid black;"></td>'
-					+'</tr>'
-					+'</table>'
-					+'</div>');
+			
 			$('#t__l').html('<a id="arith_seq"><h3>등차수열</h3></a>');
 			$('#t__l').append('<a id="swit_seq"><h3>스위치수열</h3></a>');
 			$('#t__l').append('<a id="fibo_seq"><h3>피보나치수열</h3></a>');
