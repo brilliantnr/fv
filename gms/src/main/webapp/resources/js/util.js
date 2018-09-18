@@ -1,6 +1,5 @@
 "user strict";
 
-
 $.prototype.nullChecker = x => {
 //원형에 기능부여하고, 그걸 가져다 쓴다.
 	let flag = false;
@@ -13,7 +12,6 @@ $.prototype.nullChecker = x => {
 	return flag;
 }
 
-
 $.prototype.zeroChecker = x => {
 	//원형에 기능부여하고, 그걸 가져다 쓴다.
 		let flag = false;
@@ -25,3 +23,14 @@ $.prototype.zeroChecker = x => {
 		}
 		return flag;
 	}
+
+$.prototype.anchor= x=>{
+	return $('<a/>')
+	.attr({href :'#'})
+	.html(x.txt);
+	
+//	할당을 안쓰려고 하는게 람다
+}
+
+
+

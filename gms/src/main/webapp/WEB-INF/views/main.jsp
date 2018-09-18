@@ -48,8 +48,9 @@
          folder instead of downloading all of them to reduce the load. -->
     <link href="${context}/resources/other_resources/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
 
+<script src="${context}/resources/js/app.js"></script>
 <script src="${context}/resources/js/vendor/jquery-2.2.4.min.js"></script>
-	<%-- <script src="${context}/resources/js/app.js"></script> --%>
+	
 	<script src="${context}/resources/js/popper.min.js"></script>
 	<script src="${context}/resources/js/vendor/bootstrap.min.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
@@ -68,13 +69,13 @@
 	<script src="${context}/resources/js/mail-script.js"></script>
 	<script src="${context}/resources/js/main.js"></script>
 	
-	<script src="${context}/resources/js/algo.js"></script>
 </head>
 <body>
 	 <div id="wrapper"></div> 
 	
 	<script>
-	algo.init('${context}');
+	console.log('여기가 메인이야 ㅜㅜ');
+	app.init('${context}');
 	</script>
 </body>
 </html>
