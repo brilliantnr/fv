@@ -74,7 +74,6 @@
 	 <div id="wrapper"></div> 
 	
 	<script>
-	console.log('여기가 메인이야 ㅜㅜ');
 	app.init('${context}');
 	</script>
 </body>

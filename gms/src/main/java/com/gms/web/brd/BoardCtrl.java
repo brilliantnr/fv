@@ -1,4 +1,4 @@
-package com.gms.web.brd;
+/*package com.gms.web.brd;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,3 +72,4 @@ public class BoardCtrl {
 	public void fileupload() {}
 	
 }
+*/

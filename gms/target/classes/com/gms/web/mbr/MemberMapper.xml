@@ -6,20 +6,24 @@
 	<!-- package라서 .으로 주소 이어짐(확장자 .java 임) -->
 	<!-- CUD는 리턴타입 void -->
 
-	<insert id="insert">
+	<insert id="post">
 		INSERT INTO MEMBER (USERID, NAME, SSN, PASSWORD,
 		TEAMID, ROLL,GENDER, AGE, SUBJECT)
 		VALUES
 		(#{userid},#{name},#{ssn},#{password},#{teamId},#{roll},#{gender},#{age},#{subject})
 	</insert>
-	<select id="selectSome" resultType="map">
-		<!-- " SELECT T.* FROM (SELECT ROWNUM SEQ, " + " M.* " + " FROM MEMBER 
-			M " + " ORDER BY SEQ DESC) T " + " WHERE T.SEQ BETWEEN ? AND ? "; -->
-	</select>
-	<select id="selectOne" resultType="com.gms.web.mbr.Member">
+	<select id="get" resultType="com.gms.web.mbr.Member">
 		<!-- MemberMapper.java의 메소드와 동일하게 -->
-		SELECT * FROM MEMBER
-		WHERE USERID LIKE #{userid}
+		SELECT USERID, NAME, SSN, PASSWORD,
+		TEAMID, ROLL,GENDER, AGE, SUBJECT FROM MEMBER
+		<where>
+			<if test=" userid != null and userid != '' ">
+				USERID LIKE #{userid}
+			</if>
+			<if test=" password != null and password !='' ">
+				AND PASSWORD LIKE #{password}
+			</if>
+		</where>
 	</select>
 	<select id="count" resultType="int">
 		SELECT COUNT(*) FROM MEMBER
