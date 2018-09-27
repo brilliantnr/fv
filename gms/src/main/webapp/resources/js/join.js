@@ -1,12 +1,12 @@
-function addUI(){
+function joinUI(){
 	return '<div id="contentBox">'
 +'<div id="join_div">'
-	+'<form id="join_form" name="join_form">'
+//	+'<form id="join_form" name="join_form">'
 	+'<h2>회원가입</h2>'
-		+'ID 			<br><input type="text" name="userid" required="required" /><br /> '
-		+'이름 			<br><input type="text" name="name" required/><br />'
-		+'생년월일	 	<br><input type="text" name="ssn" required/><br /> '
-		+'비밀번호	 	<br><input type="text" name="password" required/><br /> '
+		+'ID 			<br><input type="text" name="userid" placeholder="ID" required="required" /><br /> '
+		+'이름 			<br><input type="text" name="name" placeholder="이름" required/><br />'
+		+'생년월일	 	<br><input type="text" name="ssn" placeholder="생년월일" required/><br /> '
+		+'비밀번호	 	<br><input type="text" name="password" placeholder="비밀번호" required/><br /> '
 		+'<br /> <br /> '
 	+'<h4>소속팀</h4>'
 		+'<select name="teamid" id="teamid">'
@@ -33,9 +33,9 @@ function addUI(){
 		+'<input type="checkbox" name="subject" value="html" /> HTML'
 		+'<input type="checkbox" name="subject" value="spring" /> Spring'
 		+'<br />'
-		+'<button id="join_submit" >회원가입</button> '
+		//+'<button id="join_submit" >회원가입</button> '
 		+'<br /> '
-	+'</form>'
+//	+'</form>'
 +'</div>'
 +'</div> <!-- content -->';
 }

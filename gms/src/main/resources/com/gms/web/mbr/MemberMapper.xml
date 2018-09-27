@@ -5,7 +5,20 @@
 <mapper namespace="com.gms.web.mbr.MemberMapper">
 	<!-- package라서 .으로 주소 이어짐(확장자 .java 임) -->
 	<!-- CUD는 리턴타입 void -->
-
+<select id="pagination">
+	  "SELECT * FROM ( 
+				SELECT ROWNUM NO, A.* 
+				FROM ( 
+				SELECT * 
+				FROM MEMBER 
+				WHERE %s LIKE ? ) A 
+				ORDER BY NO DESC) B 
+				WHERE NO BETWEEN ? AND ?
+	</select>
+	
+	
+	
+	
 	<insert id="post">
 		INSERT INTO MEMBER (USERID, NAME, SSN, PASSWORD,
 		TEAMID, ROLL,GENDER, AGE, SUBJECT)
@@ -25,6 +38,9 @@
 			</if>
 		</where>
 	</select>
+	
+	
+	
 	<select id="count" resultType="int">
 		SELECT COUNT(*) FROM MEMBER
 	</select>

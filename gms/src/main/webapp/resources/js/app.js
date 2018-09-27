@@ -13,7 +13,7 @@ app.main =(()=>{
 	var w, header, footer, content, ctx, script, style, img;
 	var init =()=>{
 		console.log('step5 : app.main.init ::  진입');
-		ctx = $.ctx();  
+		ctx = $.ctx();
 		script = $.script();
 		style = $.style();
 		img = $.img();
@@ -24,87 +24,105 @@ app.main =(()=>{
 		setContentView();
 	};
 	var setContentView =()=>{
+		console.log('app.main.setContentView 진입');
 		app.router.home({header:'header'});
 	};
 	return {init : init};
 })();
 
 //회원가입,로그인
-//.html 쓰면 .empty할 필요없다
 app.permission = (()=>{
 	var login =()=>{
 		//alert('로그인 진입');
 		$('#footer').remove();
 		$('#content').empty();
+
 		$.getScript($.script()+'/login.js',()=>{
 			$('#content').html(loginUI());
-			$('#login_submit').click(e=>{
-				$.ajax({
-					method: 'POST',
-					url: $.ctx()+'/member/login',
-					contentType: 'application/json',
-					data: JSON.stringify({userid:$('#userid').val(), password:$('#password').val()}),
-					success: d=>{
-						alert('ID :: '+d.ID);
-						alert('PW :: '+d.PW);
-						alert('MBR :: '+d.MBR);
-						if(d.ID==="WRONG"){
-							alert('ID 확인해주세요');
-						}else if(d.PW==="WRONG"){
-							alert('비밀번호 확인해주세요');
-						}else{
-							//통과
-							app.router.home({header:'auth'});
+			$.getScript($.script()+'/compo.js',()=>{
+				$.getScript($.script()+'/login.js',()=>{
+					$('#login_submit').click(e=>{
+						$.ajax({
+							method: 'POST',
+							url: $.ctx()+'/member/login',
+							contentType: 'application/json',
+							data: JSON.stringify({userid:$('#userid').val(), password:$('#password').val()}),
+							success: d=>{
+								alert('ID :: '+d.ID);
+								alert('PW :: '+d.PW);
+								alert('MBR :: '+d.MBR);
+								if(d.ID==="WRONG"){
+									alert('ID 확인해주세요');
+								}else if(d.PW==="WRONG"){
+									alert('비밀번호 확인해주세요');
+								}else{
+									//통과
+									app.router.home({header:'auth'});
+								}
+							},
+							error: (m1,m2,m3)=>{
+								alert('에러발생 : '+'m1 : '+m1+'m2 : '+m2+'m3 : '+m3);
+							}
+						});
+					});
+				});
+			});
+		});
+	};
+	var join =()=>{
+		alert('회원가입 진입');
+		$.getScript($.script()+'/compo.js',()=>{
+			$.getScript($.script()+'/join.js',()=>{
+					$('#content').html(joinUI());
+					/*for(var i=0; i<arr.length; i++){
+						alert(arr[i]);
+					}*/
+					ui.btn({txt:"JOIN",calzz:'secondary'})
+					.appendTo("#contentBox")
+					.click(e=>{
+						e.preventDefault();
+						alert('click-------');
+						var arr =[];
+						var sub = $("[name='subject']");
+						let i;
+						for(i of sub){
+							if(i.checked){
+								alert('선택된 과목 :: '+i.value);
+								arr.push(i.value);
+							}
 						}
 						
-					},
-					error: (m1,m2,m3)=>{
-						alert('에러발생 : '+'m1 : '+m1+'m2 : '+m2+'m3 : '+m3);
-					}
+						
+						$.ajax({
+							method:'POST',
+							url: $.ctx()+'/member/join',
+							contentType:'application/json',
+							data:JSON.Stringify({
+								userid:$('#userid').val(),
+								name:$('#name').val(),
+								ssn:$('#ssn').val(),
+								password:$('#password').val(),
+								teamid:$('input[name=teamid]:selected').val(),
+								roll:$('#roll').val(),
+								subject:JSON.Stringify(arr)
+							}),
+							success:d=>{
+								alert('회원가입 성공');
+								console.log();
+							},
+							error: (m1,m2,m3)=>{
+								alert('에러발생 : '+'m1 : '+m1+'m2 : '+m2+'m3 : '+m3);
+							}
+						});
+					});
 				});
 			});
-			
-		});
+		
+		
 	};
-	var add =()=>{
-		alert('회원가입 진입');
-		$('#footer').remove();
-		$('#content').empty();
-		$.getScript($.ctx()+'/member/add',()=>{
-			$('#content').html(addUI());
-			$('#join_submit').click(e=>{
-				$.ajax({
-					method:'POST',
-					url: $.ctx()+'/member/add',
-					contentType:'application/json',
-					data:JSON.Stringify({
-						userid:$('#userid').val(),
-						name:$('#name').val(),
-						ssn:$('#ssn').val(),
-						password:$('#password').val(),
-						teamid:$('input[name=teamid]:selected').val(),
-						roll:$('#roll').val(),
-						//subject:$('#subject').val()
-					}),
-					success:d=>{
-						alert('회원가입 성공');
-						console.log();
-					},
-					error: (m1,m2,m3)=>{
-						alert('에러발생 : '+'m1 : '+m1+'m2 : '+m2+'m3 : '+m3);
-					}
-				});
-			});
-		});
-	};
-	var logout =()=>{
-		$()
-	};
-	
-	
 	return{login: login,
-		add: add,
-		logout: logout};
+		join: join
+		};
 	//스칼라로 해야됨. return안에 login과 add를 json형태로 같이 두어야 함.
 })();
 
@@ -126,6 +144,31 @@ app.board =(()=>{
 		alert('게시판');
 		$('#footer').remove();
 		$('#content').empty();
+		$.getJSON(ctx+'/boards/1',d=>{			
+			$.getScript($.script()+'/compo.js',()=>{
+				let x = {
+						type : 'default',
+						id : 'table',
+						head : '게시판',
+						body : '오픈 게시판... 누구든지 사용가능',
+						list : ['No.','제목','내용','글쓴이','작성일','조회수']
+				};
+				ui.div({id:'listContent', style:'margin: 160px 60px '}).appendTo($('#content'));
+				(ui.tbl(x)).appendTo($('#content'));
+				
+				$.each(d,(i,j)=>{
+					$('<tr/>').append(
+							$('<td/>').attr('width','5%').html(j.bno),
+							$('<td/>').attr('width','10%').html(j.title),
+							$('<td/>').attr('width','50%').html(j.content),
+							$('<td/>').attr('width','10%').html(j.writer),
+							$('<td/>').attr('width','10%').html(j.regdate),
+							$('<td/>').attr('width','5%').html(j.viewcnt)	
+					).appendTo($('tbody'));
+				})
+			});
+			console.log('getJSON 성공!!');
+		});
 	};
 	return{init:init}; 
 })();
@@ -163,6 +206,9 @@ app.router = {
 					});
 					$('#logout_btn').click(e=>{
 						app.router.home({header:'header'});
+					});
+					$('#join_btn').click(e=>{
+						app.permission.join();
 					});
 					$('#board').click(e=>{
 						app.board.init();

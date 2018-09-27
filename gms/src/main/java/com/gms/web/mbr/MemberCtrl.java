@@ -33,12 +33,12 @@ public class MemberCtrl {
 	@Autowired Member mbr;
 	@Autowired MemberMapper mbrMapper;
 	
-	@RequestMapping(value="/add",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> add(@RequestBody Member member) {
-		logger.info("---add() :: {}---","ENTER");
+	@RequestMapping(value="/join",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> join(@RequestBody Member member) {
+		logger.info("---join() :: {}---","ENTER");
 		Map<String,Object> rmap = new HashMap<>();
-		logger.info("---add() :member: {}---",member);
-		Util.Log.accept("넘어온 add 정보: 아이디: "+member.getUserid()+" 비번 : "+member.getPassword());
+		logger.info("---join() :member: {}---",member);
+		Util.Log.accept("넘어온 join 정보: 아이디: "+member.getUserid()+" 비번 : "+member.getPassword());
 		
 		String flag = "";
 		if(mbrMapper.count(member)!=0) {
@@ -49,7 +49,7 @@ public class MemberCtrl {
 				return "가입완료";
 			};
 			flag = "==완료";
-			String addSc = f.apply(member);
+			String joinSc = f.apply(member);
 		}
 		
 		Util.Log.accept(member.toString());
@@ -71,6 +71,7 @@ public class MemberCtrl {
 			idValid = "CORRECT";
 			Util.Log.accept("유효성 체크 결과 : "+idValid);
 			Function<Member, Member> f = (t)->{
+				//트랜잭션할때 필요함.
 				return mbrMapper.get(t);
 			};
 			mbr = f.apply(member);

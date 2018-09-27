@@ -4,9 +4,11 @@ var ui={
 //콜백내부(async)에서 쓸거라 var 사용
 	div : x=>{return $('<div/>').attr(x)
 		},
+	//ui.anchor({id:'',text:''});
 	anchor : x =>{return $('<a/>').attr({href :'#'}).html(x.txt);
 	},
 	ul : x=>{
+		console.log('=== ui.ul === ');
 		let ul = $('<ul/>');
 		for(var i=0;i<x.len;i++){
 			$('<li/>').attr({id:x.id+'-'+i}).appendTo(ul);
@@ -37,28 +39,49 @@ var ui={
 		return $('<label/>').attr('for',x.id).text(x.txt);
 	},
 	btn: x=>{
-		return $('<button/>').attr('type','button').addClass('btn btn-'+x.clazz).html(x.txt)
+		return $('<button/>')
+		.attr({'type':'button',
+			'id':x.id})
+		.addClass('btn btn-'+x.clazz)
+		.html(x.txt)
 	},
-	
-	input2 : x=>{
-		let p = ui.div({}).addClass("input-group mb-3");
-		ui.div({}).addClass("input-group-prepend").appendTo(p);
-		$('#test').html('<span class="input-group-text" id="basic-addon1">@</span>');
-		return p;
-	},
-	inputGroupPrepend : x=>{
-		//리턴타입 스트링이면 .html로 해야한다. append 쓰면 안돼
-		return
-		'<div class="input-group mb-3">'
-		+'<div class="input-group-prepend">'
-		+'<span class="input-group-text" id="basic-addon1">@</span>'
-		+' </div>'
-		+'<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">'
-		+'</div>'
+	tbl : x=>{
+		/*<div class="panel panel-default">
+		  <div class="panel-heading">Panel heading</div>
+		  <div class="panel-body">
+		    <p>...</p>
+		  </div>
+		  <!-- Table -->
+		  <table class="table">
+		    ...
+		  </table>
+		</div>*/
+		
+		let d = $('<div class="panel panel-'+x.type+'" id="'+x.id+'">');
+		let ph = $('<div class="panel-heading">'+x.head+'</div>');
+		let pb = $('<div class="panel-body">');
+		let p = $('<p/>');
+		d.appendTo($('#listContent'));
+		ph.appendTo($('#listContent'));
+		pb.appendTo($('#listContent'));
+		p.text(x.body).appendTo(pb);
+		
+		let t= $('<table/>');
+		let tr = $('<tr/>');
+		let thead = $('<thead/>');
+		let tbody = $('<tbody/>');
+		$.each(x.list,(i,j)=>{
+			$('<th/>').html(j).appendTo(tr);
+		});
+		tr.appendTo(thead);
+		
+		thead.appendTo(t);
+		tbody.appendTo(t);
+		
+		return t;
 	}
+	
 }
-
-
 
 
 
@@ -74,4 +97,21 @@ Dark (black)
 Link
 */
 
+/*
+input2 : x=>{
+	let p = ui.div({}).addClass("input-group mb-3");
+	ui.div({}).addClass("input-group-prepend").appendTo(p);
+	$('#test').html('<span class="input-group-text" id="basic-addon1">@</span>');
+	return p;
+},
+inputGroupPrepend : x=>{
+	//리턴타입 스트링이면 .html로 해야한다. append 쓰면 안돼
+	return
+	'<div class="input-group mb-3">'
+	+'<div class="input-group-prepend">'
+	+'<span class="input-group-text" id="basic-addon1">@</span>'
+	+' </div>'
+	+'<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">'
+	+'</div>'
+}*/
 
