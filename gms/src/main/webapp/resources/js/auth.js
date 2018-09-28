@@ -19,7 +19,7 @@ function headerUI(){
 							+'<li><a href="blog-home.html">Blog Home</a></li>'
 							+'<li><a href="blog-single.html">Blog Single</a></li>'
 						+'</ul></li>'
-					+'<li id="board" class="menu-has-children"><a>게시판</a>'
+					+'<li id="my_board" class="menu-has-children"><a>게시판</a>'
 						+'<ul>'
 							+'<li><a id="board_write">게시글 쓰기</a></li>'
 							+'<li><a id="board_list">게시글 목록보기</a></li>'

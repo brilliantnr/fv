@@ -1,4 +1,5 @@
  "use strict";
+ /*$.getJSON('',e=>{});*/
 var app = app || {};
 
 app =(()=>{
@@ -92,7 +93,6 @@ app.permission = (()=>{
 							}
 						}
 						
-						
 						$.ajax({
 							method:'POST',
 							url: $.ctx()+'/member/join',
@@ -144,34 +144,192 @@ app.board =(()=>{
 		alert('게시판');
 		$('#footer').remove();
 		$('#content').empty();
-		$.getJSON(ctx+'/boards/1',d=>{			
-			$.getScript($.script()+'/compo.js',()=>{
-				let x = {
-						type : 'default',
-						id : 'table',
-						head : '게시판',
-						body : '오픈 게시판... 누구든지 사용가능',
-						list : ['No.','제목','내용','글쓴이','작성일','조회수']
-				};
-				ui.div({id:'listContent', style:'margin: 160px 60px '}).appendTo($('#content'));
-				(ui.tbl(x)).appendTo($('#content'));
-				
-				$.each(d,(i,j)=>{
-					$('<tr/>').append(
-							$('<td/>').attr('width','5%').html(j.bno),
-							$('<td/>').attr('width','10%').html(j.title),
-							$('<td/>').attr('width','50%').html(j.content),
-							$('<td/>').attr('width','10%').html(j.writer),
-							$('<td/>').attr('width','10%').html(j.regdate),
-							$('<td/>').attr('width','5%').html(j.viewcnt)	
-					).appendTo($('tbody'));
-				})
-			});
-			console.log('getJSON 성공!!');
-		});
+		//전체글 보기
+		app.service.boards(1);
+		
+		
+		//회원글리스트 보기		
+		app.service.my_boards({id: x.id, pageNo: x.pageNo});
 	};
+
 	return{init:init}; 
 })();
+app.service = {
+		boards : x=>{
+			$.getJSON($.ctx()+'/boards/'+x,d=>{
+				$('#content').empty();
+				$.getScript($.script()+'/compo.js',()=>{
+					let x = {
+							type : 'default',
+							id : 'table',
+							head : '게시판',
+							body : '오픈 게시판... 누구든지 사용가능',
+							list : ['No.','제목','내용','글쓴이','작성일','조회수']
+					};
+					
+					ui.div({id:'listContent', style:'margin: 160px 60px '}).appendTo($('#content'));
+					(ui.tbl(x)).appendTo($('#listContent'));
+					
+					$.each(d.list,(i,j)=>{
+						//d.list <- BoardCtrl의 map에 담긴 list
+						$('<tr/>').append(
+								$('<td/>').attr('width','5%').html(j.bno),
+								$('<td/>').attr('width','10%').html(j.title),
+								$('<td/>').attr('width','50%').html(j.content),
+								$('<td/>').attr('width','10%').html(j.writer),
+								$('<td/>').attr('width','10%').html(j.regdate),
+								$('<td/>').attr('width','5%').html(j.viewcnt)	
+						).appendTo($('tbody'));
+					})
+					console.log('y전 ');
+					ui.page({}).appendTo($('#listContent'));
+					//(ui.page(y)) 자체가 dom객체. return값이 있어야 한다.
+					//(dom객체).appendTo(파라미터값);
+					//d.page <-map
+
+					// .<-class
+					let ul = $('.pagination');
+					let existPrev = x.existPrev;
+					let existNext = x.existNext;
+					let prev = '', next ='';
+					
+					prev = (existPrev)? '': 'disabled';
+					next = (existNext)? '':'disabled';
+
+					//Previous
+					$('<li/>').addClass('page-item '+prev).append(
+							$('<a/>').addClass('page-link').attr({href:"#",  tabindex:"-1"}).html('◀ Pre')
+							.click(e=>{
+								alert(' 이전 페이지 !!');
+								e.preventDefault();
+								console.log('d.page.preBlock)'+d.page.preBlock);
+								app.service.boards(d.page.preBlock);
+							})
+					).appendTo(ul);
+					//page
+					console.log('d.beginPage : '+d.page.beginPage);
+					console.log('d.endPage : '+d.page.endPage);
+					
+					for(let i=d.page.beginPage; i<= d.page.endPage; i++){
+						let act = "";
+						if(i==d.page.pageNum){
+							console.log('현재 페이지 :: '+d.page.pageNum);
+							act = "active";
+							console.log('현재 active :: '+act);
+						}
+						$('<li/>').addClass('page-item '+act).attr({id:""+i}).append(
+								$('<a/>').addClass('page-link').attr({href:"#"}).html(i)
+								.click(e=>{
+									e.preventDefault();
+									alert('페이지: '+i);
+								/*	$.getJSON('',e=>{});*/
+									app.service.boards(i);
+								})
+						).appendTo(ul);
+					}
+					//Next
+					$('<li/>').addClass('page-item '+next).append(
+							$('<a/>').addClass('page-link').attr({href:"#"}).html('Next ▶')
+							.click(e=>{
+								e.preventDefault();
+								alert(' 다음 페이지 !!');
+								console.log('d.page.nextBlock)'+d.page.nextBlock);
+								app.service.boards(d.page.nextBlock);
+							})
+					).appendTo(ul);
+					
+					
+					
+				});
+				console.log('getJSON 성공!!');
+			});
+		},
+		my_boards : x=>{
+			$.getJSON($.ctx()+'/boards/'+x.id+'/'+x.pageNo,d=>{
+				$.getScript($.script()+'/compo.js',()=>{
+					let x = {
+							type : 'warning',
+							id : 'table',
+							head : '게시판',
+							body : '내가 쓴 글 리스트',
+							list : ['No.','제목','내용','글쓴이','작성일','조회수']
+					};
+					
+					ui.div({id:'listContent', style:'margin: 160px 60px '}).appendTo($('#content'));
+					(ui.tbl(x)).appendTo($('#listContent'));
+					
+					$.each(d.list,(i,j)=>{
+						//d.list <- BoardCtrl의 map에 담긴 list
+						$('<tr/>').append(
+								$('<td/>').attr('width','5%').html(j.bno),
+								$('<td/>').attr('width','10%').html(j.title),
+								$('<td/>').attr('width','50%').html(j.content),
+								$('<td/>').attr('width','10%').html(j.writer),
+								$('<td/>').attr('width','10%').html(j.regdate),
+								$('<td/>').attr('width','5%').html(j.viewcnt)	
+						).appendTo($('tbody'));
+					})
+					console.log('y전 ');
+					ui.page({}).appendTo($('#listContent'));
+
+					let ul = $('.pagination');
+					let existPrev = x.existPrev;
+					let existNext = x.existNext;
+					let prev = '', next ='';
+					
+					prev = (existPrev)? '': 'disabled';
+					next = (existNext)? '':'disabled';
+
+					//Previous
+					$('<li/>').addClass('page-item '+prev).append(
+							$('<a/>').addClass('page-link').attr({href:"#",  tabindex:"-1"}).html('◀ Pre')
+							.click(e=>{
+								alert(' 이전 페이지 !!');
+								e.preventDefault();
+								console.log('d.page.preBlock)'+d.page.preBlock);
+								app.service.boards(d.page.preBlock);
+							})
+					).appendTo(ul);
+					//page
+					console.log('d.beginPage : '+d.page.beginPage);
+					console.log('d.endPage : '+d.page.endPage);
+					
+					for(let i=d.page.beginPage; i<= d.page.endPage; i++){
+						let act = "";
+						if(i==d.page.pageNum){
+							console.log('현재 페이지 :: '+d.page.pageNum);
+							act = "active";
+							console.log('현재 active :: '+act);
+						}
+						$('<li/>').addClass('page-item '+act).attr({id:""+i}).append(
+								$('<a/>').addClass('page-link').attr({href:"#"}).html(i)
+								.click(e=>{
+									e.preventDefault();
+									alert('페이지: '+i);
+								/*	$.getJSON('',e=>{});*/
+									app.service.boards(i);
+								})
+						).appendTo(ul);
+					}
+					//Next
+					$('<li/>').addClass('page-item '+next).append(
+							$('<a/>').addClass('page-link').attr({href:"#"}).html('Next ▶')
+							.click(e=>{
+								e.preventDefault();
+								alert(' 다음 페이지 !!');
+								console.log('d.page.nextBlock)'+d.page.nextBlock);
+								app.service.boards(d.page.nextBlock);
+							})
+					).appendTo(ul);
+					
+					
+					
+				});
+				console.log('getJSON 성공!!');
+			});
+		}
+};
+
 
 app.router = {
 	init : x=>{
@@ -213,6 +371,9 @@ app.router = {
 					$('#board').click(e=>{
 						app.board.init();
 					});
+					$('#my_board').click(e=>{
+						app.board.init();
+					});
 					console.log(' when done 로드성공');
 			})
 			.fail(x=>{console.log(' when fail 로드실패');})
@@ -226,6 +387,42 @@ app.router = {
 
 
 
+
+
+
+//==================================================================================	
+/* List로 
+ * 	var setContentView =()=>{
+alert('게시판');
+$('#footer').remove();
+$('#content').empty();
+$.getJSON(ctx+'/boards/1',d=>{			
+	$.getScript($.script()+'/compo.js',()=>{
+		let x = {
+				type : 'default',
+				id : 'table',
+				head : '게시판',
+				body : '오픈 게시판... 누구든지 사용가능',
+				list : ['No.','제목','내용','글쓴이','작성일','조회수']
+		};
+		
+		ui.div({id:'listContent', style:'margin: 160px 60px '}).appendTo($('#content'));
+		(ui.tbl(x)).appendTo($('#content'));
+		
+		$.each(d,(i,j)=>{
+			$('<tr/>').append(
+					$('<td/>').attr('width','5%').html(j.bno),
+					$('<td/>').attr('width','10%').html(j.title),
+					$('<td/>').attr('width','50%').html(j.content),
+					$('<td/>').attr('width','10%').html(j.writer),
+					$('<td/>').attr('width','10%').html(j.regdate),
+					$('<td/>').attr('width','5%').html(j.viewcnt)	
+			).appendTo($('tbody'));
+		})
+	});
+	console.log('getJSON 성공!!');
+});
+};*/
 
 
 

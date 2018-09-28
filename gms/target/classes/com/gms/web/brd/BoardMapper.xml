@@ -30,12 +30,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY B.NUM
     </select>
 	
-		<select id="countPaging" resultType="int">
- select 
-   count(*) 
- from 
-   board 
+		<select id="countAll" resultType="int">
+ SELECT 
+   COUNT(*) 
+ FROM 
+   BOARD 
 	</select>
+	
+	<select id="listByUser" resultType="com.gms.web.brd.Board">
+          SELECT *
+        FROM (
+            SELECT
+                ROW_NUMBER() OVER(ORDER BY BNO DESC) AS NUM,
+                A.*
+            FROM
+                BOARD A
+			WHERE WRITER = #{id}                
+        )B
+        WHERE B.NUM BETWEEN #{beginRow} AND #{endRow}
+        ORDER BY B.NUM
+    </select>
+	<select id="countByUser" resultType="int">
+ SELECT 
+   COUNT(*) 
+ FROM 
+   BOARD 
+ WHERE WRITER = #{id}        
+	</select>
+	
 	
 <!-- 
 	<select id="listPage" resultType="com.gms.web.brd.Board">

@@ -42,7 +42,7 @@
 		<!-- <property name="url" value="jdbc:mariadb://localhost:3306/mariadb" /> -->
 		
 		<!-- 혜리 DB -->
-		<property name="url" value="jdbc:mariadb://203.236.209.50:3306/mariadb" />
+		<property name="url" value="jdbc:mariadb://localhost:3306/mariadb" />
 		<property name="username" value="mariadb" />
 		<property name="password" value="mariadb" />
 	</bean>

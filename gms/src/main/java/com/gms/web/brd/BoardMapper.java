@@ -15,9 +15,12 @@ public interface BoardMapper {
   public void update(Board vo) throws Exception;
   public void delete(Integer bno) throws Exception;
   public List<Board> listAll(Pagination p);
+  public List<Board> listByUser(Pagination p);
   public List<Board> listPage(int page) throws Exception;
   public List<Board> listCriteria(Criteria cri) throws Exception;
   public int countPaging(Criteria cri) throws Exception;
+  public int countAll();
+  public int countByUser();
   public List<Board> listSearch(SearchCriteria cri)throws Exception;    //use for dynamic sql
   public int listSearchCount(SearchCriteria cri)throws Exception;
   public void updateReplyCnt(Integer bno, int amount)throws Exception;
